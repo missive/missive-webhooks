@@ -1,4 +1,4 @@
-const { github } = require('./lib/integrations')
+const { github } = require('.')
 const types = [
   'create',
   'pull_request',

@@ -2,7 +2,7 @@
   "name": "missive-integrations",
   "version": "1.0.0",
   "description": "Missive built-in integrations",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
   },
   "repository": {
