@@ -4,6 +4,8 @@
   "description": "Missive built-in integrations",
   "main": "lib/index.js",
   "scripts": {
+    "start": "node server.js",
+    "tunnel": "lt --port 8080 --subdomain $SUBDOMAIN"
   },
   "repository": {
     "type": "git",
@@ -14,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/missive/missive-integrations/issues"
   },
-  "homepage": "https://github.com/missive/missive-integrations#readme"
+  "homepage": "https://github.com/missive/missive-integrations#readme",
+  "dependencies": {
+    "atob": "2.0.3",
+    "body-parser": "1.18.2",
+    "express": "4.16.2",
+    "request": "2.83.0"
+  },
+  "devDependencies": {
+    "dotenv": "4.0.0",
+    "localtunnel": "1.8.3"
+  }
 }
