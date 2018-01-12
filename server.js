@@ -19,10 +19,11 @@ app.post('/:provider', (req, res) => {
   let { provider } = req.params
   let integration, base64JSON = req.query.t
 
-  let { token, options } = JSON.parse(Atob(base64JSON))
+  let data = JSON.parse(Atob(base64JSON))
+  let { token, options } = data
 
   if (integration = Integrations[provider]) {
-    let { references, subject, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req) || {}
+    let { references, subject, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req, data[provider]) || {}
     if (attachment) attachments = [attachment]
 
     let meta = {
