@@ -28,6 +28,7 @@ app.post('/:provider', (req, res) => {
     let meta = {
       username: integration.name || integration.constructor.name,
       username_icon: integration.avatar || `https://raw.githubusercontent.com/missive/missive-integrations/master/assets/integrations/${provider}.png`,
+      conversation_icon: integration.icon || `https://raw.githubusercontent.com/missive/missive-integrations/master/assets/integrations/${provider}.png`,
       text, markdown, attachments,
       notification: { title: subject, body: notification },
     }
