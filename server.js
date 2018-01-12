@@ -45,7 +45,7 @@ app.post('/:provider', (req, res) => {
       }).pipe(res)
     }
 
-    return res.status(501).send('Integration can’t process payload')
+    return res.status(200).send('Event type not implemented')
   }
 
   res.status(404).send(`Integration not found: ${provider}`)
