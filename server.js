@@ -22,7 +22,7 @@ app.post('/:provider', (req, res) => {
   let { token, options } = JSON.parse(Atob(base64JSON))
 
   if (integration = Integrations[provider]) {
-    let { references, subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req) || {}
+    let { references, subject, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req) || {}
     if (attachment) attachments = [attachment]
 
     let meta = {
@@ -35,6 +35,7 @@ app.post('/:provider', (req, res) => {
     if (references && meta.text || meta.markdown || meta.attachments) {
       options.references = references.map((ref) => `<${provider}/${ref}@missive-integrations>`)
       options.conversation_subject = subject
+      options.update_existing_conversation_subject = update_existing_conversation_subject || false
       options.meta = meta
 
       return Request.post({
