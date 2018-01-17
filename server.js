@@ -43,7 +43,7 @@ app.post('/:provider', (req, res) => {
       return Request.post({
         baseUrl: process.env.MISSIVE_API_BASE_URL,
         uri: '/posts',
-        json: { post: options },
+        json: { posts: options },
         auth: { bearer: token }
       }).pipe(res)
     }
