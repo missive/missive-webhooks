@@ -21,6 +21,7 @@ app.post('/:provider', (req, res) => {
 
   let data = JSON.parse(Atob(base64JSON))
   let { token, options } = data
+  options || (options = {})
 
   if (integration = Integrations[provider]) {
     let { references, subject, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req, data[provider]) || {}
