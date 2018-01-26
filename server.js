@@ -85,6 +85,17 @@ app.get('/', (req, res) => {
   `)
 })
 
+app.get('/integrations', (req, res) => {
+  let integrations = {}
+
+  for (let provider in Integrations) {
+    let integration = Integrations[provider]
+    integrations[provider] = integration.toJSON()
+  }
+
+  res.send(integrations)
+})
+
 app.listen(Port, () => {
   console.log(`Missive Integrations listening on port ${Port}`)
 })
