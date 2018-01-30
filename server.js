@@ -12,8 +12,8 @@ const Request = require('request')
 const Integrations = require('.')
 
 let app = Express()
-app.use(BodyParser.json())
-app.use(BodyParser.urlencoded({ extended: true }))
+app.use(BodyParser.json({ limit: '10mb' }))
+app.use(BodyParser.urlencoded({ extended: true, limit: '10mb' }))
 
 app.post('/:provider', (req, res) => {
   let { provider } = req.params
