@@ -27,19 +27,20 @@ app.post('/:provider', (req, res) => {
     let { references, subject, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req, data[provider]) || {}
     if (attachment) attachments = [attachment]
 
-    let meta = {
-      username: integration.name,
-      username_icon: integration.avatar,
-      conversation_icon: integration.icon,
-      text, markdown, attachments,
-      notification: { title: subject, body: notification },
-    }
-
-    if (references && meta.text || meta.markdown || meta.attachments) {
+    if (references && (text || markdown || attachments)) {
       options.references = references.map((ref) => `<${provider}/${ref}@missive-integrations>`)
       options.conversation_subject = subject
       options.update_existing_conversation_subject = update_existing_conversation_subject || false
-      options.meta = meta
+      options.username = integration.name
+      options.username_icon = integration.avatar
+      options.conversation_icon = integration.icon
+      options.text = text
+      options.markdown = markdown
+      options.attachments = attachments
+      options.notification = {
+        title: subject,
+        body: notification,
+      }
 
       return Request.post({
         baseUrl: process.env.MISSIVE_API_BASE_URL,
