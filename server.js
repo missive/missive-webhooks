@@ -24,12 +24,13 @@ app.post('/:provider', (req, res) => {
   options || (options = {})
 
   if (integration = Integrations[provider]) {
-    let { references, subject, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req, data[provider]) || {}
+    let { references, subject, color, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req, data[provider]) || {}
     if (attachment) attachments = [attachment]
 
     if (references && (text || markdown || attachments)) {
       options.references = references.map((ref) => `<${provider}/${ref}@missive-integrations>`)
       options.conversation_subject = subject
+      options.conversation_color = color
       options.update_existing_conversation_subject = update_existing_conversation_subject || false
       options.username = integration.name
       options.username_icon = integration.avatar
