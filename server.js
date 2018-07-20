@@ -8,6 +8,7 @@ const BodyParser = require('body-parser')
 const Express = require('express')
 const Port = process.env.PORT || 8080
 const Request = require('request')
+const Rollbar = require('rollbar')
 
 const Integrations = require('.')
 
@@ -97,6 +98,19 @@ app.get('/integrations', (req, res) => {
 
   res.send(integrations)
 })
+
+// Rollbar
+// Must be added after all routes are registered
+if (process.env.ROLLBAR_SERVER_ACCESS_TOKEN) {
+  let rollbar = new Rollbar({
+    accessToken: process.env.ROLLBAR_SERVER_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  })
+
+  app.use(rollbar.errorHandler())
+  rollbar.handleUncaughtExceptions()
+}
 
 app.listen(Port, () => {
   console.log(`Missive Integrations listening on port ${Port}`)
