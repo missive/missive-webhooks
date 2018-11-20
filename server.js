@@ -9,17 +9,14 @@ const Express = require('express')
 const Port = process.env.PORT || 8080
 const Request = require('request')
 const Rollbar = require('rollbar')
+const Cors = require('cors')
 
 const Integrations = require('.')
 
 let app = Express()
 app.use(BodyParser.json({ limit: '10mb' }))
 app.use(BodyParser.urlencoded({ extended: true, limit: '10mb' }))
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  next()
-})
+app.use(Cors())
 
 app.post('/:provider', (req, res) => {
   let { provider } = req.params
