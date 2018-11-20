@@ -16,6 +16,11 @@ let app = Express()
 app.use(BodyParser.json({ limit: '10mb' }))
 app.use(BodyParser.urlencoded({ extended: true, limit: '10mb' }))
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+})
+
 app.post('/:provider', (req, res) => {
   let { provider } = req.params
   let integration, base64JSON = req.query.t
@@ -96,7 +101,6 @@ app.get('/integrations', (req, res) => {
     integrations[provider] = integration.toJSON()
   }
 
-  res.header('Access-Control-Allow-Origin', '*')
   res.send(integrations)
 })
 
