@@ -96,6 +96,7 @@ app.get('/integrations', (req, res) => {
     integrations[provider] = integration.toJSON()
   }
 
+  res.header('Access-Control-Allow-Origin', '*')
   res.send(integrations)
 })
 
