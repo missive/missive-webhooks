@@ -28,5 +28,8 @@
   "devDependencies": {
     "dotenv": "4.0.0",
     "localtunnel": "1.8.3"
+  },
+  "engines": {
+    "node": "12.3.1"
   }
 }
