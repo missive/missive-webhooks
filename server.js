@@ -22,6 +22,10 @@ app.post('/:provider', (req, res) => {
   let { provider } = req.params
   let integration, base64JSON = req.query.t
 
+  if (!base64JSON) {
+    return res.status(404).send(`Integration not found: ${provider}`)
+  }
+
   let data = JSON.parse(Atob(base64JSON))
   let { token, options } = data
   options || (options = {})
