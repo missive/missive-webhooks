@@ -115,6 +115,10 @@ app.get('/integrations', (req, res) => {
   res.send(integrations)
 })
 
+app.get('*', (req, res) => {
+  res.status(404).send('Not Found')
+})
+
 // Rollbar
 // Must be added after all routes are registered
 if (process.env.ROLLBAR_SERVER_ACCESS_TOKEN) {
