@@ -1,6 +1,6 @@
 <div align="center">
   <br>Push content into <b>Missive</b> via our hosted webhook integrations.
-  <br><a href="https://missiveapp.com/help/api-documentation/webhooks">Documentation</a> • <a href="https://github.com/missive/missive-webhooks/pulls">Submit your own</a>
+  <br><a href="https://missiveapp.com/help/api-documentation/webhook-integrations">Documentation</a> • <a href="https://github.com/missive/missive-webhooks/pulls">Submit your own</a>
   <br><br><img width="898" src="https://raw.githubusercontent.com/missive/missive-webhooks/master/assets/integrations.png">
 </div>
 
