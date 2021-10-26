@@ -14,9 +14,24 @@ const Cors = require('cors')
 const Integrations = require('.')
 
 let app = Express()
+app.disable('x-powered-by')
 app.use(BodyParser.json({ limit: '10mb' }))
 app.use(BodyParser.urlencoded({ extended: true, limit: '10mb' }))
 app.use(Cors())
+
+app.use((req, res, next) => {
+  res.header('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'")
+  res.header('X-Content-Type-Options', 'nosniff')
+  res.header('X-Frame-Options', 'SAMEORIGIN')
+  res.header('X-XSS-Protection', '1; mode=block')
+
+  // Force HTTPS
+  if (req.secure || req.header('X-Forwarded-Proto') == 'https') {
+    res.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+    return next()
+  }
+  res.redirect(`https://${req.hostname}${req.url}`)
+})
 
 app.post('/:provider', (req, res) => {
   let { provider } = req.params
