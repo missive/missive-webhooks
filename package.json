@@ -4,8 +4,7 @@
   "description": "Missive built-in integrations",
   "main": "lib/index.js",
   "scripts": {
-    "start": "node server.js",
-    "tunnel": "lt --port 8080 --subdomain $SUBDOMAIN"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -26,8 +25,7 @@
     "rollbar": "2.4.2"
   },
   "devDependencies": {
-    "dotenv": "4.0.0",
-    "localtunnel": "1.8.3"
+    "dotenv": "4.0.0"
   },
   "engines": {
     "node": "14.15.4"
