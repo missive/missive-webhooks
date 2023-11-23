@@ -148,5 +148,5 @@ if (process.env.ROLLBAR_SERVER_ACCESS_TOKEN) {
 }
 
 app.listen(Port, () => {
-  console.log(`Missive Integrations listening on port ${Port}`)
+  console.log(`Missive Webhooks listening on port ${Port}`)
 })
