@@ -124,6 +124,8 @@ app.get('/integrations', (req, res) => {
 
   for (let provider in Integrations) {
     let integration = Integrations[provider]
+    if (integration.deprecated) continue
+
     integrations[provider] = integration.toJSON()
   }
 
