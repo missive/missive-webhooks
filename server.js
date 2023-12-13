@@ -52,35 +52,57 @@ app.post('/:provider', (req, res) => {
     return notFound()
   }
 
-  let { token, options } = data
-  options || (options = {})
+  const { token: bearer, options } = data
 
-  if (integration = Integrations[provider]) {
-    let { references, subject, color, update_existing_conversation_subject, attachment, attachments, text, markdown, notification } = integration.process(req.body, req, data[provider]) || {}
-    if (attachment) attachments = [attachment]
+  const createPost = (payload = {}) => {
+    const posts = JSON.parse(JSON.stringify(options || {}))
 
-    if (references && (text || markdown || attachments)) {
-      options.references = references.map((ref) => `<${provider}/${ref}@missive-integrations>`)
-      options.conversation_subject = subject
-      options.conversation_color = color
-      options.update_existing_conversation_subject = update_existing_conversation_subject || false
-      options.username = integration.name
-      options.username_icon = integration.avatar
-      options.conversation_icon = integration.icon
-      options.text = text
-      options.markdown = markdown
-      options.attachments = attachments
-      options.notification = {
+    const { references, conversation, subject, color, update_existing_conversation_subject, attachment, text, markdown, notification, callback } = payload
+    const attachments = attachment ? [attachment] : payload.attachments
+
+    if ((references || conversation) && (text || markdown || attachments)) {
+      posts.username = integration.name
+      posts.username_icon = integration.avatar
+      posts.text = text
+      posts.markdown = markdown
+      posts.attachments = attachments
+      posts.notification = {
         title: subject,
         body: notification,
+      }
+
+      if (conversation) {
+        posts.conversation = conversation
+        delete posts.organization
+        delete posts.add_shared_labels
+        delete posts.add_users
+      } else {
+        posts.references = references.map((ref) => `<${provider}/${ref}@missive-integrations>`)
+        posts.conversation_subject = subject
+        posts.conversation_color = color
+        posts.update_existing_conversation_subject = update_existing_conversation_subject || false
+        posts.conversation_icon = integration.icon
       }
 
       return Request.post({
         baseUrl: process.env.MISSIVE_API_BASE_URL,
         uri: '/posts',
-        json: { posts: options },
-        auth: { bearer: token }
-      }).pipe(res)
+        json: { posts },
+        auth: { bearer },
+        callback: (err, response, body) => {
+          if (err) return
+          callback && callback(body.posts.conversation, { createPost })
+        },
+      })
+    }
+  }
+
+  if (integration = Integrations[provider]) {
+    const payload = integration.process(req.body, req, data[provider])
+    const request = createPost(payload)
+
+    if (request) {
+      return request.pipe(res)
     }
 
     return res.status(200).send('Event type not implemented')
